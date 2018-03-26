@@ -4,7 +4,7 @@ var elf, speed =4;
 demo.state0 = function(){};
 demo.state0.prototype = {
     preload: function(){
-        game.load.image('elf', 'assets/sprites/PiskelElf.png');
+        game.load.spritesheet('elf', 'assets/spritesheets/PiskelElfss.png', 190, 290);
         game.load.image('treeBg', 'assets/backgrounds/phaserBg.png');
     },
     create: function(){
@@ -25,6 +25,8 @@ demo.state0.prototype = {
         elf.scale.setTo(0.8, 0.8);
         game.physics.enable(elf);
         elf.body.collideWorldBounds = true;
+        elf.animations.add('walk', [0,1,2,3]);
+        
         
         game.camera.follow(elf);
         game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 1000);
@@ -33,10 +35,16 @@ demo.state0.prototype = {
         if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
             elf.scale.setTo(0.8, 0.8);
             elf.x += speed;
+            elf.animations.play('walk', 14, true);
         }
         else if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
             elf.scale.setTo(-0.8, 0.8);
             elf.x -= speed;
+            elf.animations.play('walk', 14, true);
+        }
+        else {
+            elf.animations.stop('walk');
+            elf.frame = 0;
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.UP)){
             elf.y -= speed;
